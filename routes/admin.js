@@ -16,7 +16,7 @@ router.get("/categorias", (req, res) => {
     res.render("admin/categorias")
 })
 
-router.get("/addcategorias", (req, res) => {
+router.get('/categorias/add', (req, res) => {
     res.render("admin/addcategorias")
 })
 
