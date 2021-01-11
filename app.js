@@ -37,7 +37,12 @@ app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 //Mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/blogapp").then(() => {
+mongoose.connect("mongodb://localhost/blogapp",{
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+ 
+}).then(() => {
     Console.log("Conectado ao Mongo")
 }).catch((err) => {
     console.log("Erro ao se conectar" + err)
