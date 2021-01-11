@@ -20,13 +20,13 @@ app.use(session({
 }))
 
 //Flash
-app.use(flash())
+app.use(flash());
 
 //Middleware
 app.use((req, res, next) => {
-    res.locals.success_msg = req.flash("Sucess_msg")
-    res.locals.error_msg = req.flash("error_msg")
-    next()
+    res.locals.success_msg = req.flash('success_msg')
+    res.locals.error_msg = req.flash('error_msg')
+    next();
 })
 
 //body parser
