@@ -39,11 +39,11 @@ app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 //Mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost/blogapp",{
+mongoose.connect("mongodb://localhost/blogapp", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
- 
+
 }).then(() => {
     Console.log("Conectado ao Mongo")
 }).catch((err) => {
@@ -59,19 +59,34 @@ app.use((req, res, next) => {
 })
 
 //Rotas
-app.get('/',(req,res)=>{
-    Postagem.find().populate("categoria").sort({data:"desc"}).lean().then((postagens)=>{
-        res.render('index', {postagens: postagens})
-    }).catch((err)=>{
+app.get('/', (req, res) => {
+    Postagem.find().populate("categoria").sort({ data: "desc" }).lean().then((postagens) => {
+        res.render('index', { postagens: postagens })
+    }).catch((err) => {
         req.flash('error_msg', 'Houve um erro interno')
         res.redirect('/404')
     })
-    app.get('/404',(req, res)=>{
+
+    app.get("/postagem/:slug", (req, res) => {
+        Postagem.findOne({ slug: req.params.slug }).lean().then((postagem)=>{
+            if(postagem){
+                res.render("postagem/index", {postagem: postagem})
+            }else{
+                req.flash('error_msg', 'Esta postagem não existe')
+                res.redirect('/')
+            }
+        }).catch((err)=>{
+            req.flash('error_msg','houve um erro interno')
+            res.redirect('/')
+        })
+    })
+
+    app.get('/404', (req, res) => {
         res.send("error 404!")
     })
-    
+
 })
-app.get('/posts',(req,res)=>{
+app.get('/posts', (req, res) => {
     res.send('Lista posts')
 })
 
