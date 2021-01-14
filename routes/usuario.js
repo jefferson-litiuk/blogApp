@@ -29,7 +29,7 @@ router.post("/registro", (req, res) => {
     }
 
     if (erros.length > 0) {
-       res.render("usuarios/registro", { erros: erros });
+        res.render("usuarios/registro", { erros: erros });
     } else {
         Usuario.findOne({ email: req.body.email }).then((usuario) => {
             if (usuario) {
@@ -66,6 +66,10 @@ router.post("/registro", (req, res) => {
         });
     }
 });
+
+router.get('/login', (req, res) => {
+    res.render('usuarios/login')
+})
 
 
 module.exports = router
