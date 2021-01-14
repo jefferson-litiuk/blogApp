@@ -17,7 +17,6 @@ const Categoria = mongoose.model("categorias")
 const usuarios = require('./routes/usuario')
 const passport = require('passport')
 require('./config/auth')(passport)
-
 //Configurações
 
 //Sessão
@@ -37,6 +36,7 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
     res.locals.error = req.flash("error")
+    res.locals.user = req.user || null;
     next();
 })
 
@@ -98,12 +98,12 @@ app.get('/', (req, res) => {
         })
     })
     app.get('/categorias/:slug', (req, res) => {
-        Categoria.findOne({slug: req.params.slug}).lean().then((categoria) => {
+        Categoria.findOne({ slug: req.params.slug }).lean().then((categoria) => {
             if (categoria) {
 
                 Postagem.find({ categoria: categoria._id }).lean().then((postagens) => {
-                    res.render('categorias/postagens', {postagens: postagens, categoria: categoria})
-                }).catch((err)=>{
+                    res.render('categorias/postagens', { postagens: postagens, categoria: categoria })
+                }).catch((err) => {
                     req.flash('erro_msg', 'Houve um erro ao listar os posts!')
                     res.redirect('/')
                 })
